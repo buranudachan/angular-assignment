@@ -1,0 +1,70 @@
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation();selectionRow(row);"
+                    (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                    [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+            </td>
+        </ng-container>
+
+        <!-- Id Column -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+
+        <!-- First Name Column -->
+        <ng-container matColumnDef="first_name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.first_name}} </td>
+        </ng-container>
+
+        <!-- Last Name Column -->
+        <ng-container matColumnDef="last_name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.last_name}} </td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+        </ng-container>
+
+        <!-- upload image Column -->
+        <ng-container matColumnDef="upload">
+            <th mat-header-cell *matHeaderCellDef> Upload & Download </th>
+            <td mat-cell *matCellDef="let element">
+                <label class="btn btn-default">
+                    <input type="file" (change)="selectFile($event)" />
+                </label>&nbsp;
+                <button class="btn btn-success" [disabled]="!selectedFiles">
+                    <span class="glyphicon glyphicon-upload"></span> Upload
+                </button>&nbsp;
+                <button class="btn btn-success" (click)="downloadMyFile(element.avatar)">
+                    <span class="glyphicon glyphicon-download-alt"></span> Download
+                </button>
+            </td>
+        </ng-container>
+        <!-- upload image Column -->
+        <ng-container matColumnDef="avatar">
+            <th mat-header-cell *matHeaderCellDef> View Animation </th>
+            <td mat-cell *matCellDef="let element">
+                <img [src]="element.avatar" />
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>
